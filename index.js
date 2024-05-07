@@ -16,19 +16,30 @@ const fbr = 0.5; // fuel burn rate (kg/s)
 
  //calcultes new distance
  const d2 = d + (vel*time/10000)
+ if (d2<0){
+  throw new Error("New distance cannot be negative")
+ }
  console.log(`Corrected New Distance: ${d2} km`);
+
 
 //calculates remaining fuel
  const rf = fbr*time 
+ if (rf<0){
+  throw new Error("Remaining fuel cannot be negative")
+ }
  console.log(`Corrected Remaining Fuel: ${rf} kg`);
 
-//calculates new velocity based on acceleration
+//calculates new velocity 
  const vel2 = calcNewVel(acc, vel, time) 
 console.log(`Corrected New Velocity: ${vel2} km/h`);
 
-// Pick up an error with how the function below is called and make it robust to such errors
+// velocity based on acceleration
 calcNewVel = (vel, acc, time) => {
-  return vel + (acc*time)
+  if (acc.units !== vel.units.slice(0,-2)){
+    throw new Error("Acceleration and Velocity must be in the same units")
+  }
+  const timeConverted = time.value * time.units.slice(-1)
+  const vel2 =vel.value + (acc.value* timeConverted)
 }
 
 

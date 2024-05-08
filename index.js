@@ -29,17 +29,21 @@ const fbr = 0.5; // fuel burn rate (kg/s)
  }
  console.log(`Corrected Remaining Fuel: ${rf} kg`);
 
+ const acc_kmh_squred= acc * 1000/3600
+
 //calculates new velocity 
- const vel2 = calcNewVel(acc, vel, time) 
+ const vel2 = calcNewVel(vel, acc, time) 
 console.log(`Corrected New Velocity: ${vel2} km/h`);
 
 // velocity based on acceleration
-calcNewVel = (vel, acc, time) => {
+ const calcNewVel = (vel, acc, time) => {
   if (acc.units !== vel.units.slice(0,-2)){
     throw new Error("Acceleration and Velocity must be in the same units")
   }
-  const timeConverted = time.value * time.units.slice(-1)
+  const timeConverted = time.value * time.units.slice(0-4)
   const vel2 =vel.value + (acc.value* timeConverted)
+  return {value: vel2,units: vel.units}
+    
 }
 
 

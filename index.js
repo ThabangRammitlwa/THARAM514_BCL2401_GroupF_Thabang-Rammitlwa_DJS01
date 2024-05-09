@@ -1,9 +1,10 @@
-/**
- * Debugging Guide
- * 1. Make the code more readable
- * 2. Pick up calculation errors
- * 3. Make these calculations robust such that the calculation does not give an incorrect result, it throws an error to the user if something has gone wrong (parameter used with an incorrect unit of measurement, etc)
- */
+/** 
+* Debugging Guide
+*Make the code more readable
+*Pick up calculation errors
+*Make these calculations robust such that the calculation does not give an incorrect result, it throws an error to the user if something has gone wrong (parameter used with an incorrect unit of measurement, etc)
+*/
+
 
 // Given Parameters
 const vel = 10000; // velocity (km/h)
@@ -14,37 +15,44 @@ const fuel = 5000; // remaining fuel (kg)
 const fbr = 0.5; // fuel burn rate (kg/s)
 
 
- //calcultes new distance
- const d2 = d + (vel*time/10000)
- if (d2<0){
+// Convert time to hours for consistent unit
+const d2 = d + (vel*(time/3600)); //calcultes new distance
+if (d2<0){
   throw new Error("New distance cannot be negative")
  }
- console.log(`Corrected New Distance: ${d2} km`);
 
 
-//calculates remaining fuel
- const rf = fbr*time 
- if (rf<0){
+// Calculate remaining fuel 
+const rf = fuel - (fbr*time); //calculates remaining fuel
+if (rf < 0) {
   throw new Error("Remaining fuel cannot be negative")
  }
- console.log(`Corrected Remaining Fuel: ${rf} kg`);
 
- const acc_kmh_squred= acc * 1000/3600
 
-//calculates new velocity 
- const vel2 = calcNewVel(vel, acc, time) 
-console.log(`Corrected New Velocity: ${vel2} km/h`);
-
-// velocity based on acceleration
- const calcNewVel = (vel, acc, time) => {
-  if (acc.units !== vel.units.slice(0,-2)){
-    throw new Error("Acceleration and Velocity must be in the same units")
+// Calculate new velocity based on acceleration
+const calcNewVel = (vel, acc, time) => { 
+  if (acc < 0) {
+    throw new Error("Acceleration cannot be negative")
   }
-  const timeConverted = time.value * time.units.slice(0-4)
-  const vel2 =vel.value + (acc.value* timeConverted)
-  return {value: vel2,units: vel.units}
-    
+  return vel + (acc*(time*3.6));
+  
 }
+
+const vel2 = calcNewVel(vel, acc, time);
+
+console.log(`Corrected New Velocity: ${vel2.toFixed(2)} km/h`);
+console.log(`Corrected New Distance: ${d2.toFixed(2)} km`);
+console.log(`Corrected Remaining Fuel: ${rf.toFixed(2)} kg`);
+
+
+   
+
+
+
+
+
+
+
 
 
 

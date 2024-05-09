@@ -16,14 +16,14 @@ const fbr = 0.5; // fuel burn rate (kg/s)
 
 
 // Convert time to hours for consistent unit
-const d2 = d + (-vel*(time/3600)); //calcultes new distance
+const d2 = d + (vel*(time/3600)); //calcultes new distance
 if (d2<0){
   throw new Error("New distance cannot be negative")
  }
 
 
 // Calculate remaining fuel 
-const rf = -fuel - (fbr*time); //calculates remaining fuel
+const rf = fuel - (fbr*time); //calculates remaining fuel
 if (rf < 0) {
   throw new Error("Remaining fuel cannot be negative")
  }
